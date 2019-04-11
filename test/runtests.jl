@@ -180,15 +180,14 @@ end
 @testset "$(rpad("allocation of evaluation of B splines",P))"  begin
     allocation_test()
 end
-readmenotebook = normpath((splitdir(@__FILE__))[1]*"/../notebooks/README.ipynb")
-readmemarkdown = normpath((splitdir(@__FILE__))[1]*"/../README.md")
 
 if CREATE_README
+    cd(normpath((splitdir(@__FILE__))[1]*"/.."))
     try
         println("Create README.md")
-        run(`jupyter nbconvert --execute --to markdown --output $readmemarkdown $readmenotebook`)
-        # run(`mv notebooks/README.md .`)
-        # run(`mv notebooks/README_files/ .`)
+        run(`jupyter nbconvert --execute --to markdown --output README.md notebooks/README.ipynb`)
+        run(`mv notebooks/README.md .`)
+        run(`mv notebooks/README_files/ .`)
     catch
         nothing
     end

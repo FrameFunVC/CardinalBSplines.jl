@@ -13,10 +13,6 @@ using QuadGK
 using Plots
 ```
 
-    ┌ Info: Recompiling stale cache file /Users/vincentcp/.julia/compiled/v1.1/Plots/ld3vC.ji for Plots [91a5bcdd-55d7-5caf-9e0b-520d859cae80]
-    └ @ Base loading.jl:1184
-
-
 `BSpline`
 
 
@@ -30,7 +26,7 @@ plot!()
 
 
 
-![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_3_0.svg)
+![svg](README_files/README_3_0.svg)
 
 
 
@@ -47,7 +43,7 @@ plot!()
 
 
 
-![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_5_0.svg)
+![svg](README_files/README_5_0.svg)
 
 
 
@@ -64,7 +60,7 @@ plot!()
 
 
 
-![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_7_0.svg)
+![svg](README_files/README_7_0.svg)
 
 
 
@@ -81,7 +77,7 @@ plot!()
 
 
 
-![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_9_0.svg)
+![svg](README_files/README_9_0.svg)
 
 
 
@@ -98,7 +94,7 @@ plot!()
 
 
 
-![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_11_0.svg)
+![svg](README_files/README_11_0.svg)
 
 
 
