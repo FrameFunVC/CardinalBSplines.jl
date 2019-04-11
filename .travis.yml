@@ -1,0 +1,14 @@
+language: julia
+os:
+  - linux
+  - osx
+julia:
+  - 1.0
+  - nightly
+matrix:
+    allow_failures:
+        - julia: nightly
+notifications:
+  email: false
+after_success:
+    - julia -e 'cd(Pkg.dir("CardinalBSplines")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(process_folder()); Codecov.submit(process_folder())'

@@ -1,6 +1,6 @@
 
- [![Build Status](https://travis-ci.org/vincentcp/CardinalBSplines.svg?branch=master)](https://travis-ci.org/vincentcp/CardinalBSplines)
- [![Coverage Status](https://coveralls.io/repos/github/vincentcp/CardinalBSplines/badge.svg?branch=master)](https://coveralls.io/github/vincentcp/CardinalBSplines?branch=master)
+ [![Build Status](https://travis-ci.org/vincentcp/CardinalBSplines.jl.svg?branch=master)](https://travis-ci.org/vincentcp/CardinalBSplines.jl)
+ [![Coverage Status](https://coveralls.io/repos/github/vincentcp/CardinalBSplines.jl/badge.svg?branch=master)](https://coveralls.io/github/vincentcp/CardinalBSplines.jl?branch=master)
  # CardinalBSplines
 
 A Julia module for evaluating cardinal B splines and L2 inner products over cardinal B splines
@@ -141,16 +141,16 @@ squared_integrals_test = [QuadGK.quadgk(x->CardinalBSplines.evaluate_Bspline(Val
 
 
     10-element Array{Float64,1}:
-     0.6666666666666667 
-     0.5499999999999999 
-     0.4793650793650795 
+     0.6666666666666667
+     0.5499999999999999
+     0.4793650793650795
      0.43041776895943445
-     0.3939255651755637 
-     0.3653708694854521 
-     0.3422402613553404 
+     0.3939255651755637
+     0.3653708694854521
+     0.3422402613553404
      0.32300939415699864
      0.30669310173798253
-     0.2926226872314349 
+     0.2926226872314349
 
 
 
@@ -179,7 +179,7 @@ shifted_integrals = [shifted_spline_integral(N, t, BigFloat) for N in 1:10, t in
      0.34224   0.238123  0.0785953   0.0115023       0.0          0.0        
      0.323009  0.233737  0.0873116   0.0160739       2.81146e-15  0.0        
      0.306693  0.229046  0.0944193   0.0207811       4.30982e-12  8.22064e-18
-     0.292623  0.22428   0.100194    0.025452        2.03837e-10  4.1047e-14 
+     0.292623  0.22428   0.100194    0.025452        2.03837e-10  4.1047e-14
 
 
 
@@ -202,7 +202,7 @@ shifted_integrals_test = [QuadGK.quadgk(x->CardinalBSplines.evaluate_Bspline(Val
      0.34224   0.238123  0.0785953   0.0115023       0.0          0.0        
      0.323009  0.233737  0.0873116   0.0160739       2.81146e-15  0.0        
      0.306693  0.229046  0.0944193   0.0207811       4.30982e-12  8.22064e-18
-     0.292623  0.22428   0.100194    0.025452        2.03837e-10  4.1047e-14 
+     0.292623  0.22428   0.100194    0.025452        2.03837e-10  4.1047e-14
 
 
 
