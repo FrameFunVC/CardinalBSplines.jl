@@ -7,8 +7,8 @@ for (T, f) in ((:BSpline, :evaluate_Bspline),
     @eval begin
         struct ($T){K,S} <:AbstractBSpline{K,S}
             function ($T){K,S}() where {K,S}
-                @assert K isa Integer && K >= 0
-                @assert S <: Real
+                # @assert K isa Integer && K >= 0
+                # @assert S <: Real
                 new{K,S}()
             end
         end
@@ -25,9 +25,9 @@ for (T, f) in ((:PeriodicBSpline, :evaluate_periodic_Bspline),
         struct ($T){K,S} <:AbstractBSpline{K,S}
             period  :: S
             function ($T){K,S}(period) where {K,S}
-                @assert K isa Integer && K >= 0
-                @assert S <: Real
-                @assert period > 0
+                # @assert K isa Integer && K >= 0
+                # @assert S <: Real
+                # @assert period > 0
                 new{K,S}(convert(S, period))
             end
         end
@@ -43,9 +43,9 @@ for (T, f) in ((:BSplineDiff, :evaluate_Bspline_derivative),
     @eval begin
         struct ($T){K,D,S}<:AbstractBSplineDerivative{K,D,S}
             function ($T){K,D,S}() where {K,D,S}
-                @assert K isa Integer && K >= 0
-                @assert D isa Integer && D >= 0
-                @assert S <: Real
+                # @assert K isa Integer && K >= 0
+                # @assert D isa Integer && D >= 0
+                # @assert S <: Real
                 new{K,D,S}()
             end
         end
@@ -63,10 +63,10 @@ for (T, f) in ((:PeriodicBSplineDiff, :evaluate_periodic_Bspline_derivative),
         struct ($T){K,D,S} <:AbstractBSplineDerivative{K,D,S}
             period  :: S
             function ($T){K,D,S}(period) where {K,D,S}
-                @assert K isa Integer && K >= 0
-                @assert D isa Integer && D >= 0
-                @assert S <: Real
-                @assert period > 0
+                # @assert K isa Integer && K >= 0
+                # @assert D isa Integer && D >= 0
+                # @assert S <: Real
+                # @assert period > 0
                 new{K,D,S}(convert(S, period))
             end
         end
