@@ -1,15 +1,5 @@
-using CardinalBSplines
-using QuadGK
-
-CREATE_README = false
-if VERSION < v"0.7-"
-    using Base.Test
-    CREATE_README = true
-else
-    using LinearAlgebra
-    using Test
-    linspace(a,b,c) = range(a, stop=b, length=c)
-end
+using CardinalBSplines, LinearAlgebra, Test, QuadGK
+CREATE_README = true
 
 
 
@@ -18,14 +8,14 @@ function elementarypropsofsplinetest(T)
     tol = sqrt(eps(T))
     S = 20
     for N in 1:10
-        f = x->evaluate_Bspline(N-1, x, T)
+        f = BSpline(N-1,T)
         # Integral should be 1
         if !(T <: BigFloat)
             I,e = QuadGK.quadgk(f, 0, N, rtol = tol)
             @test I≈T(1)
         end
         # Infinite summation of shifted versions is 1
-        xx = linspace(T(N-1), T(N), S)[1:end-1]
+        xx = LinRange(T(N-1), T(N), S)[1:end-1]
         # xx = range(T(N-1), step=T(1)/T(S), length=S)
         g = zeros(T,length(xx))
         for k in 0:N-1
@@ -33,7 +23,7 @@ function elementarypropsofsplinetest(T)
         end
         @test g ≈ ones(T,length(g))  # (norm(g-1) < tol)
         # Two scale relation
-        x = linspace(T(-1), T(N+1), S)
+        x = LinRange(T(-1), T(N+1), S)
         # x = range(T(-1), step=T(1)/T(S), length=S)
         g = zeros(T,length(x))
         for k in 0:N
@@ -48,27 +38,25 @@ end
 function periodicbsplinetest(T)
     for N in 0:4
         period = T(N+1)
-        for x in linspace(T(0),period,10)[1:end-1]
-            @test (evaluate_periodic_Bspline(N, x, period, T) ≈ evaluate_Bspline(N, x, T))
-            for k in -2:2
-                @test (evaluate_periodic_Bspline(N, x, period, T) ≈ evaluate_periodic_Bspline(N, x+k*period, period, T))
-            end
+        x = LinRange(T(0),period,10)[1:end-1]
+        PeriodicBSpline(N, period, T).(x) ≈ BSpline(N,T).(x)
+        for k in -2:2
+            @test PeriodicBSpline(N, period, T).(x) ≈ PeriodicBSpline(N,period,T).(x .+ k*period)
         end
         period = T(N+1)/T(3)
-        for x in linspace(0,period,10)[1:end-1]
-            for k in -2:2
-                @test (evaluate_periodic_Bspline(N, x, period, T) ≈ evaluate_periodic_Bspline(N, x+k*period, period, T))
-            end
+        x = LinRange(T(0),period,10)[1:end-1]
+        for k in -2:2
+            @test PeriodicBSpline(N, period, T).(x) ≈ PeriodicBSpline(N,period,T).(x .+ k*period)
         end
     end
 end
-function symmetricbsplinestest(T)
+
+function centeredbsplinestest(T)
     K = 20
     for N in 0:4
-        xs = linspace(T(0)+eps(T), T(1), K)
-        for x in xs
-            @test evaluate_symmetric_periodic_Bspline(N, x, T(10(N+1)), T) ≈ evaluate_symmetric_periodic_Bspline(N, -x, T(10(N+1)), T)
-        end
+        x = LinRange(T(0)+eps(T), T(1), K)
+        @test PeriodicCenteredBSpline(N, 10(N+1), T).(x) ≈ PeriodicCenteredBSpline(N, 10(N+1), T).(-x)
+        @test CenteredBSpline(N, T).(x) ≈ CenteredBSpline(N, T).(-x)
     end
 end
 
@@ -77,7 +65,7 @@ function test_spline_integration()
     for N in 0:8
         @test squared_spline_integral(N) ≈ shifted_spline_integral(N,0)
         for t in 0:4
-            f = x->evaluate_Bspline(N,x,T)
+            f = BSpline(N, T)
             @test abs(QuadGK.quadgk(x->f(x)*f(x+t),(-N-2:N+2)..., rtol=sqrt(eps(T)))[1]-shifted_spline_integral(N,t))<10*sqrt(eps(T))
         end
     end
@@ -85,28 +73,28 @@ end
 
 
 function derivative_test(T)
-    t = linspace(-10,10,100); t2 = (t[1:end-1]+t[2:end])/2
+    t = LinRange(-10,10,100); t2 = (t[1:end-1]+t[2:end])/2
     for i in 2:10
-        y1 = evaluate_Bspline.(i, t, T)
-        y2 = diff_evaluate_Bspline.(i, t2, T)
+        y1 = BSpline(i,T).(t)
+        y2 = BSplineDiff(i,T).(t2)
         @test norm(diff(y1)./diff(t).-y2) < .1
     end
     for i in 2:10
-        y1 = evaluate_periodic_Bspline.(i, t, 5, T)
-        y2 = diff_evaluate_periodic_Bspline.(i, t2, 5, T)
+        y1 = PeriodicBSpline(i, 5, T).(t)
+        y2 = PeriodicBSplineDiff(i, 5, T).(t2)
         @test norm(diff(y1)./diff(t).-y2) < .1
     end
 
-    for t in [linspace(0,1,100), linspace(-1,0,100), linspace(1,2,100)]
+    for t in [LinRange(0,1,100), LinRange(-1,0,100), LinRange(1,2,100)]
         t2 = (t[1:end-1]+t[2:end])/2
-        y1 = evaluate_Bspline.(1, t, T)
-        y2 = diff_evaluate_Bspline.(1, t2, T)
+        y1 = BSpline(1,T).(t)
+        y2 = BSplineDiff(1,T).(t2)
         @test norm(diff(y1)./diff(t).-y2) < .1
     end
 
-    t0 = linspace(-1,7,100)
+    t0 = LinRange(-1,7,100)
     for D in 0:6
-        @test norm(diff_evaluate_Bspline.(Val{D}, Val{D+1}, t0, Float64)) == 0
+        @test norm(BSplineDiff(D,D+1,T).(t0))==0
     end
 
     t0 = -2.25:1/(1<<4):10
@@ -117,33 +105,60 @@ function derivative_test(T)
     t5 = (t4[1:end-1]+t4[2:end])/2
 
     for D in 3:6
-        y0 = diff_evaluate_Bspline.(Val{D}, Val{0}, t0, Float64)
-        y2 = diff_evaluate_Bspline.(Val{D}, Val{2}, t2, Float64)
+        y0 = BSplineDiff(D,0,T).(t0)
+        y2 = BSplineDiff(D,2,T).(t2)
         @test .5 > norm(diff(diff(y0)./diff(t0))./diff(t1) - y2)
     end
 
     for D in 4:6
-        y0 = diff_evaluate_Bspline.(Val{D}, Val{0}, t0, Float64)
-        y2 = diff_evaluate_Bspline.(Val{D}, Val{3}, t3, Float64)
+        y0 = BSplineDiff(D,0,T).(t0)
+        y2 = BSplineDiff(D,3,T).(t3)
         @test .5 > norm(  diff(diff(diff(y0)./diff(t0))./diff(t1))./diff(t2) - y2)
     end
 
     for D in 5:6
-        y0 = diff_evaluate_Bspline.(Val{D}, Val{0}, t0, Float64)
-        y2 = diff_evaluate_Bspline.(Val{D}, Val{4}, t4, Float64)
+        y0 = BSplineDiff(D,0,T).(t0)
+        y2 = BSplineDiff(D,4,T).(t4)
         @test .5 > norm(  diff(diff(diff(diff(y0)./diff(t0))./diff(t1))./diff(t2))./diff(t3) - y2)
     end
 
     for D in 6:8
-        y0 = diff_evaluate_Bspline.(Val{D}, Val{0}, t0, Float64)
-        y2 = diff_evaluate_Bspline.(Val{D}, Val{5}, t5, Float64)
+        y0 = BSplineDiff(D,0,T).(t0)
+        y2 = BSplineDiff(D,5,T).(t5)
         @test .5 > norm(  diff(diff(diff(diff(diff(y0)./diff(t0))./diff(t1))./diff(t2))./diff(t3))./diff(t4) - y2)
     end
 
     for D in 1:6
-        @test Int.(diff_evaluate_Bspline.(Val{D}, Val{D}, -.5:D+2, T)) == vcat(0,[(-1)^k*binomial(D,k) for k in 0:D],0)
+        @test Int.(BSplineDiff(D, D, T).(-.5:D+2)) == vcat(0,[(-1)^k*binomial(D,k) for k in 0:D],0)
     end
 end
+
+
+function allocation_test()
+    for T in (BSpline, PeriodicBSpline, CenteredBSpline, PeriodicCenteredBSpline)
+        for K in 0:10
+            f = T(K)
+            for x in LinRange(-10,10,30)
+                f(x)
+            end
+            for x in LinRange(-10,10,30)
+                @test @timed(f(x))[3] == 32
+            end
+        end
+    end
+    for T in (BSplineDiff,)
+        for K in 0:10, D in 1:K
+            f = T(K,D)
+            for x in LinRange(-10,10,2)
+                f(x)
+            end
+            for x in LinRange(-10,10,30)
+                @test @timed(f(x))[3] == 32
+            end
+        end
+    end
+end
+
 P = 80
 for T in [Float64, BigFloat]
     @testset "$(rpad("Elementary properties",P))" begin
@@ -152,23 +167,28 @@ for T in [Float64, BigFloat]
     @testset "$(rpad("periodic B splines",P))"  begin
       periodicbsplinetest(T)
     end
-    @testset "$(rpad("symmetric B splines",P))"  begin
-      symmetricbsplinestest(T)
+    @testset "$(rpad("centered B splines",P))"  begin
+      centeredbsplinestest(T)
     end
     @testset "$(rpad("derivative of B splines",P))"  begin
       derivative_test(T)
     end
 end
 @testset "$(rpad("integration of B splines",P))"  begin
-  test_spline_integration()
+    test_spline_integration()
 end
+@testset "$(rpad("allocation of evaluation of B splines",P))"  begin
+    allocation_test()
+end
+readmenotebook = normpath((splitdir(@__FILE__))[1]*"/../notebooks/README.ipynb")
+readmemarkdown = normpath((splitdir(@__FILE__))[1]*"/../README.md")
 
 if CREATE_README
     try
         println("Create README.md")
-        run(`jupyter nbconvert --execute --to markdown --output README.md notebooks/README.ipynb`)
-        run(`mv notebooks/README.md .`)
-        run(`mv notebooks/README_files/ .`)
+        run(`jupyter nbconvert --execute --to markdown --output $readmemarkdown $readmenotebook`)
+        # run(`mv notebooks/README.md .`)
+        # run(`mv notebooks/README_files/ .`)
     catch
         nothing
     end

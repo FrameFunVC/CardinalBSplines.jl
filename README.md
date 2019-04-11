@@ -13,56 +13,104 @@ using QuadGK
 using Plots
 ```
 
-evaluate_Bspline{T<:Real}(N::Int, x::Real, ::Type{T})
+    ┌ Info: Recompiling stale cache file /Users/vincentcp/.julia/compiled/v1.1/Plots/ld3vC.ji for Plots [91a5bcdd-55d7-5caf-9e0b-520d859cae80]
+    └ @ Base loading.jl:1184
+
+
+`BSpline`
 
 
 ```julia
 t = LinRange(-1,11,500)
 plot(legend=false)
-[plot!(t,evaluate_Bspline.(degree,t,Float64)) for degree in 0:10]
+[plot!(t,BSpline(degree).(t)) for degree in 0:10]
 plot!()
 ```
 
 
 
 
-![svg](/Users/vincentcp/julia/CardinalBSplines/README_3_0.svg)
+![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_3_0.svg)
 
 
 
-evaluate_periodic_Bspline{T<:Real}(N::Int, x::Real, period::Real, ::Type{T})
+`PeriodicBSpline`
 
 
 ```julia
 t = LinRange(-1,11,500)
 plot(legend=false)
-[plot!(t,evaluate_periodic_Bspline.(degree,t,4,Float64)) for degree in 0:6]
+[plot!(t,PeriodicBSpline(degree,4).(t)) for degree in 0:6]
 plot!()
 ```
 
 
 
 
-![svg](/Users/vincentcp/julia/CardinalBSplines/README_5_0.svg)
+![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_5_0.svg)
 
 
 
-evaluate_symmetric_periodic_Bspline{T<:Real}(N::Int, x::Real, period::Real, ::Type{T})
+`PeriodicCenteredBSpline`
 
 
 ```julia
 t = LinRange(-4,4,500)
 plot(legend=false)
-[plot!(t,evaluate_symmetric_periodic_Bspline.(degree,t,4,Float64)) for degree in 0:6]
+[plot!(t,PeriodicCenteredBSpline(degree, 4).(t)) for degree in 0:6]
 plot!()
 ```
 
 
 
 
-![svg](/Users/vincentcp/julia/CardinalBSplines/README_7_0.svg)
+![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_7_0.svg)
 
 
+
+`BSplineDiff`
+
+
+```julia
+t = LinRange(-1,11,500)
+plot(legend=false)
+[plot!(t,BSplineDiff(4,diff).(t)) for diff in 0:4]
+plot!()
+```
+
+
+
+
+![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_9_0.svg)
+
+
+
+`PeriodicBSplineDiff`
+
+
+```julia
+t = LinRange(-1,7,500)
+plot(legend=false)
+[plot!(t,PeriodicBSplineDiff(4,3,diff).(t)) for diff in 0:4]
+plot!()
+```
+
+
+
+
+![svg](/Users/vincentcp/NextCloud/julia/CardinalBSplines.jl/README_11_0.svg)
+
+
+
+
+```julia
+
+```
+
+
+```julia
+
+```
 
 squared_spline_integral(N::Int)
 
@@ -74,23 +122,23 @@ squared_integrals = [squared_spline_integral(N) for N in 1:10]
 
 
 
-    10-element Array{Float64,1}:
-     0.6666666666666666 
-     0.55               
-     0.4793650793650794 
-     0.4304177689594356 
-     0.39392556517556515
-     0.36537086948545283
-     0.34224026135534075
-     0.3230093941569987 
-     0.3066931017380086 
-     0.29262268723147017
+    10-element Array{Rational{BigInt},1}:
+                      2//3                  
+                     11//20                 
+                    151//315                
+                  15619//36288              
+                 655177//1663200            
+               27085381//74131200           
+             2330931341//6810804000         
+            12157712239//37638881280        
+         37307713155613//121645100408832    
+     339781108897078469//1161157776629760000
 
 
 
 
 ```julia
-squared_integrals_test = [QuadGK.quadgk(x->evaluate_Bspline(N,x,Float64)^2,LinRange(0,11,12)...)[1] for N in 1:10]
+squared_integrals_test = [QuadGK.quadgk(x->CardinalBSplines.evaluate_Bspline(Val{N}(),x,Float64)^2,LinRange(0,11,12)...)[1] for N in 1:10]
 ```
 
 
@@ -141,7 +189,8 @@ shifted_integrals = [shifted_spline_integral(N, t, BigFloat) for N in 1:10, t in
 
 
 ```julia
-shifted_integrals_test = [QuadGK.quadgk(x->evaluate_Bspline(N,x-t,Float64)*evaluate_Bspline(N,x,Float64),LinRange(0,11,12)...)[1] for N in 1:10, t in 0:9]
+shifted_integrals_test = [QuadGK.quadgk(x->CardinalBSplines.evaluate_Bspline(Val{N}(),x-t,Float64)*
+        CardinalBSplines.evaluate_Bspline(Val{N}(),x,Float64),LinRange(0,11,12)...)[1] for N in 1:10, t in 0:9]
 ```
 
 
@@ -164,4 +213,14 @@ shifted_integrals_test = [QuadGK.quadgk(x->evaluate_Bspline(N,x-t,Float64)*evalu
 
 ```julia
 @assert shifted_integrals ≈ shifted_integrals_test
+```
+
+
+```julia
+
+```
+
+
+```julia
+
 ```
