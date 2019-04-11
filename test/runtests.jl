@@ -1,5 +1,5 @@
 using CardinalBSplines, LinearAlgebra, Test, QuadGK
-CREATE_README = true
+CREATE_README = false
 
 
 
