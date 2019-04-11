@@ -64,9 +64,14 @@ function test_spline_integration()
     T = Float64
     for N in 0:8
         @test squared_spline_integral(N) ≈ shifted_spline_integral(N,0)
+        @test squared_spline_integral(N, Float64) ≈ shifted_spline_integral(N,0, Float64)
+        @test squared_spline_integral(N) ≈ shifted_spline_integral(N,0, Float64)
         for t in 0:4
             f = BSpline(N, T)
-            @test abs(QuadGK.quadgk(x->f(x)*f(x+t),(-N-2:N+2)..., rtol=sqrt(eps(T)))[1]-shifted_spline_integral(N,t))<10*sqrt(eps(T))
+            i = QuadGK.quadgk(x->f(x)*f(x+t),(-N-2:N+2)..., rtol=sqrt(eps(T)))[1]
+            @test abs(i-shifted_spline_integral(N,t))<10*sqrt(eps(T))
+            @test abs(i-shifted_spline_integral(N,t,Float64))<10*sqrt(eps(T))
+            @test abs(i-shifted_spline_integral(N,t,BigFloat))<10*sqrt(eps(T))
         end
     end
 end
