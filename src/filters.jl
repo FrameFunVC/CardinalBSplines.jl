@@ -11,9 +11,6 @@ bsplinesignal(n::Int, m::Int, ::Type{T}=Float64) where {T} =
 periodicbsplinesignal(n::Int, m::Int, N::Int, ::Type{T}=Float64) where {T} =
     PeriodicInfiniteVector(bsplinesignal(n, m, T), m*N)
 
-oversampleddualbsplinesignal(n::Int, m::Int, ::Type{T}=Float64) where {T} =
-    inv(bsplinesignal(n,m,T), m)
-
 leastsquares_dualperiodicbsplinesignal(n::Int, m::Int, N::Int, ::Type{T}=Float64) where {T} =
     leastsquares_inv(periodicbsplinesignal(n, m, N, T), m)
 
