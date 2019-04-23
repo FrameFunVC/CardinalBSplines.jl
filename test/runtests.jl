@@ -186,6 +186,8 @@ end
     allocation_test()
 end
 
+include("filter_test.jl")
+
 if CREATE_README
     cd(normpath((splitdir(@__FILE__))[1]*"/.."))
     try

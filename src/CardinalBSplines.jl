@@ -13,7 +13,7 @@ include("splineevaluation.jl")
 include("integration.jl")
 
 using Sequences
-export bsplinesignal
+export bsplinesignal, periodicbsplinesignal, leastsquares_dualperiodicbsplinesignal, compact_dualperiodicbsplinesignal
 include("filters.jl")
 
 end # module
