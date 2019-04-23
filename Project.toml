@@ -4,7 +4,6 @@ authors = ["vincentcp"]
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
-Sequences = "a3035606-0d97-52a5-9f37-19f5f67b7424"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
