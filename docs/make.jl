@@ -1,4 +1,6 @@
 using Pkg
+pkg"rm CardinalBSplines"
+pkg"rm Sequences"
 pkg"add https://github.com/vincentcp/Sequences.jl"
 Pkg.develop(PackageSpec(path=splitdir(@__DIR__)[1]))
 pkg"instantiate"
