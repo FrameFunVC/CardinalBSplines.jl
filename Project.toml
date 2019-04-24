@@ -1,11 +1,13 @@
 name = "CardinalBSplines"
 uuid = "87d49508-7ad8-11e8-0eda-cb6920b58870"
 authors = ["vincentcp"]
+version = "0.0.0"
 
 [deps]
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 Pkg = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
+Sequences = "a3035606-0d97-52a5-9f37-19f5f67b7424"
 
 [compat]
 julia = "1.0"
