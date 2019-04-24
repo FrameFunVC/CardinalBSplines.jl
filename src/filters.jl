@@ -1,5 +1,8 @@
+export bsplinesignal, periodicbsplinesignal
 """
-Discrete B spline signal.
+    bsplinesignal(n::Int, [, m::Int] ::Type{T}=Float64)
+
+Discrete B-spline signal of degree `n` and oversampling `m`.
 
 Implements the signals of `B-Spline Signal Processing: Part I`\\
 Unser et al., IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 41, NO. 2
@@ -8,6 +11,14 @@ bsplinesignal(n::Int, ::Type{T}=Float64) where {T} =
     CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -n), convert(T, n), 2n+1), T), -n)
 bsplinesignal(n::Int, m::Int, ::Type{T}=Float64) where {T} =
     CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -n), convert(T, n), 2n*m+1), T), -n*m)
+
+"""
+    periodicbsplinesignal(n::Int, m::Int, N::Int, ::Type{T}=Float64)
+
+Discrete B-spline signal of degree `n`, oversampling `m` and period `mN`.
+
+See also `bsplinesignal`
+"""
 periodicbsplinesignal(n::Int, m::Int, N::Int, ::Type{T}=Float64) where {T} =
     PeriodicInfiniteVector(bsplinesignal(n, m, T), m*N)
 
@@ -33,13 +44,43 @@ end
 #     CompactInfiniteVector(p[-5nm:5nm], -5nm)
 # end
 
+"""
+    bn(n::Int, ::Type{T}=Float64)
 
+Discrete B-spline signal of degree `n` and period `mN`.
+
+Implements the signals of `B-Spline Signal Processing: Part I`\\
+Unser et al., IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 41, NO. 2
+"""
 bn(n::Int, ::Type{T}=Float64) where T = bsplinesignal(n, T)
+"""
+    bnm(n::Int, m::Int, [N::Int, ]::Type{T}=Float64)
+
+Discrete B-spline signal of degree `n` and oversampling `m`.
+If 'N' is specified the signal is periodic with period `Nm`.
+
+Implements the signals of `B-Spline Signal Processing: Part I`\\
+Unser et al., IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 41, NO. 2
+"""
 bnm(n::Int, m::Int, ::Type{T}=Float64) where T = bsplinesignal(n, m, T)
 bnm(n::Int, m::Int, N::Int, ::Type{T}=Float64) where T = periodicbsplinesignal(n, m, N, T)
 # b̃nm(n::Int, m::Int, ::Type{T}=Float64) where T = leastsquares_dualbsplinesignal(n, m, T)
+"""
+    b̃nm(n::Int, m::Int, N::Int, ::Type{T}=Float64)
+
+Least squares dual of `bnm`:
+
+    \$b̃nm(k)= \\left[\\left([bnm*bnm]_{↓m}\\right)^{-1}\\right]_{↑m}*bnm(k)\$.
+"""
 b̃nm(n::Int, m::Int, N::Int, ::Type{T}=Float64) where T = leastsquares_dualperiodicbsplinesignal(n, m, N, T)
 # snm(n::Int, m::Int, ::Type{T}=Float64; opts...) where T = leastsquarescoefficients(n, m, T; opts...)
+"""
+    snm(n::Int, m::Int, N::Int, ::Type{T}=Float64)
+
+The coefficients of `b̃nm` in `bnm`, i.e.,
+
+    \$\\tilde bnm(k) = [snm]_{\\uparrow m}*bnm(k)\$
+"""
 snm(n::Int, m::Int, N::Int, ::Type{T}=Float64) where T = periodicleastsquarescoefficients(n, m, N, T)
 
 

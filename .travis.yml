@@ -10,7 +10,16 @@ matrix:
         - julia: nightly
 notifications:
   email: false
-  
+
 after_success:
   - julia --project=coverage/ -e 'using Pkg; Pkg.instantiate()'
   - julia --project=coverage/ coverage/coverage.jl
+
+jobs:
+    include:
+        - stage: "Documentation"
+          julia: 1.0
+          os: linux
+          script:
+            - julia --project=docs/ --color=yes docs/make.jl deploy
+          after_success: skip

@@ -1,6 +1,10 @@
+
 abstract type AbstractBSplineDerivative{K,D,S} end
 
 abstract type AbstractBSpline{K,S} <: AbstractBSplineDerivative{K,0,S} end
+
+
+
 
 for (T, f) in ((:BSpline, :evaluate_Bspline),
                 (:CenteredBSpline, :evaluate_centered_BSpline))
@@ -18,6 +22,29 @@ for (T, f) in ((:BSpline, :evaluate_Bspline),
         (::($T){K,S})(x) where {K,S} = $f(Val{K}(), convert(S,x), S)
     end
 end
+
+export BSpline, CenteredBSpline
+
+@doc """
+    BSpline(m, T=Float64)
+
+Construct a B-spline of order `m` and type `T`
+
+
+The support of the B-spline is [0,m+1].
+"""
+BSpline(m, T)
+
+@doc """
+    CenteredBSpline(m, T=Float64)
+
+Construct a centered B-spline of order `m` and type `T`
+
+
+The support of the centered B-spline is s \$\\left[-\\tfrac{m+1}{2},\\tfrac{m+1}{2}\\right]\$.
+"""
+CenteredBSpline(m, T)
+
 
 for (T, f) in ((:PeriodicBSpline, :evaluate_periodic_Bspline),
                 (:PeriodicCenteredBSpline, :evaluate_periodic_centered_BSpline))
@@ -38,6 +65,26 @@ for (T, f) in ((:PeriodicBSpline, :evaluate_periodic_Bspline),
     end
 end
 
+export PeriodicBSpline, PeriodicCenteredBSpline
+
+@doc """
+    PeriodicBSpline(m, p=1, S=Float64)
+
+Construct a periodic B-spline of order `m`, period `p`, and type `S`
+
+See also `BSpline`
+"""
+PeriodicBSpline(m, p, S)
+
+@doc """
+    PeriodicCenteredBSpline(m, p=1, S=Float64)
+
+Construct a periodic centered B-spline of order `m` and type `S`.
+
+See also `CenteredBSpline`
+"""
+PeriodicCenteredBSpline(m, p, S)
+
 for (T, f) in ((:BSplineDiff, :evaluate_Bspline_derivative),
                 (:CenteredBSplineDiff, :evaluate_centered_BSpline_derivative))
     @eval begin
@@ -56,6 +103,29 @@ for (T, f) in ((:BSplineDiff, :evaluate_Bspline_derivative),
         (::($T){K,D,S})(x) where {K,D,S} = $f(Val{K}(), Val{D}(), convert(S,x), S)
     end
 end
+
+
+export BSplineDiff, CenteredBSplineDiff
+
+@doc """
+    BSplineDiff(m, d, S=Float64)
+
+Construct the `d`th derivative of a B-spline of order `m` and type `S`
+
+See also `BSpline`
+"""
+BSplineDiff(m, d, S)
+
+@doc """
+    CenteredBSplineDiff(m, d, S=Float64)
+
+Construct the `d`th derivative of a centered B-spline of order `m` and type `S`.
+
+See also `CenteredBSpline`
+"""
+CenteredBSplineDiff(m, d, S)
+
+
 
 for (T, f) in ((:PeriodicBSplineDiff, :evaluate_periodic_Bspline_derivative),
                 (:PeriodicCenteredBSplineDiff, :evaluate_periodic_centered_BSpline_derivative))
@@ -76,3 +146,22 @@ for (T, f) in ((:PeriodicBSplineDiff, :evaluate_periodic_Bspline_derivative),
         (spline::($T){K,D,S})(x) where {K,S,D} = $f(Val{K}(), Val{D}(), convert(S,x), spline.period, S)
     end
 end
+
+export PeriodicBSplineDiff, PeriodicCenteredBSplineDiff
+@doc """
+    PeriodicBSplineDiff(m, p, d, S=Float64)
+
+Construct the `d`th derivative of a periodic B-spline of order `m` , period `p` and type `S`
+
+See also `PeriodicBSpline`
+"""
+PeriodicBSplineDiff(m, p, d, S)
+
+@doc """
+    PeriodicCenteredBSplineDiff(m, p, d, S=Float64)
+
+Construct the `d`th derivative of a periodic, centered B-spline of order `m`, period `p`, and type `S`.
+
+See also `PeriodicCenteredBSpline`
+"""
+PeriodicCenteredBSplineDiff(m, p, d, S)

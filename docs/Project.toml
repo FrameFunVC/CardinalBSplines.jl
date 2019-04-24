@@ -1,0 +1,5 @@
+[deps]
+CardinalBSplines = "87d49508-7ad8-11e8-0eda-cb6920b58870"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+Sequences = "a3035606-0d97-52a5-9f37-19f5f67b7424"

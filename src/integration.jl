@@ -1,11 +1,16 @@
+export squared_spline_integral, shifted_spline_integral
 """
-  Calculates ∫[B_N(x)]^2 dx, with B_N the cardinal bspline of degree N
+    squared_spline_integral(N)
+
+Calculate ∫\$[B_N(x)]^2\$ dx, with \$B_N\$ the B-spline of degree N
 """
 squared_spline_integral(N::Int, ::Type{T}=BigInt) where T<:Real =
     squared_spline_integral(N, zero(T))
 
 """
-  Calculates ∫ B_m(x) B_m(x-t) dx, with B_m the cardinal bspline of degree m
+    shifted_spline_integral(m, t)
+
+Calculate ∫ \$B_m(x) B_m(x-t)\$ dx, with \$B_m\$ the B-spline of degree m
 """
 shifted_spline_integral(m::Int,t::Int, ::Type{T}=BigInt) where T<:Real =
     shifted_spline_integral(m, t, zero(T))
@@ -50,9 +55,6 @@ function shifted_spline_integral(m::Int,t::Int, ::T) where T<:AbstractFloat
     convert(T,I/(factorial(M)^convert(T,2)))
 end
 
-"""
-  Calculates ∫[B_N(x)]^2 dx, with B_N the cardinal bspline of degree N
-"""
 function squared_spline_integral(N::Int, ::T) where T<:Integer
     m = convert(T, N+1)
     if m > 7 && sizeof(T) <= 8
@@ -65,9 +67,6 @@ function squared_spline_integral(N::Int, ::T) where T<:Integer
     S//(2^(2m-1)*factorial(2m-1))
 end
 
-"""
-  Calculates ∫ B_m(x) B_m(x-t) dx, with B_m the cardinal bspline of degree m
-"""
 function shifted_spline_integral(m::Int,t::Int, ::T) where T<:Integer
     # @assert t >= 0
     t = abs(t)

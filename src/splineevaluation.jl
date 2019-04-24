@@ -1,8 +1,18 @@
 
 # Implementation of cardinal B splines of degree N
+"""
+    evaluate_periodic_centered_BSpline(::Val{N}, x, period, ::Type{T})
+
+Evaluate the periodic centered B-spline of order `N`, type `T` and period `p` in `x`.
+"""
 evaluate_periodic_centered_BSpline(::Val{N}, x::Real, period::Real, ::Type{T}) where {T<:Real,N} =
     evaluate_periodic_Bspline(Val{N}(), x+T(N+1)/2, period, T)
 
+"""
+    evaluate_centered_BSpline(::Val{N}, x, period, ::Type{T})
+
+Evaluate the centered B-spline of order `N` and type `T` in `x`.
+"""
 evaluate_centered_BSpline(::Val{N}, x::Real, ::Type{T}) where {T<:Real,N} =
     evaluate_Bspline(Val{N}(), x+T(N+1)/2, T)
 
@@ -13,6 +23,11 @@ function periodize(x::Real, period::Real)
     x
 end
 
+"""
+    evaluate_periodic_BSpline(::Val{N}, x, period, ::Type{T})
+
+Evaluate the periodic B-spline of order `N`, type `T` and period `p` in `x`.
+"""
 function evaluate_periodic_Bspline(::Val{N}, x::Real, period::Real, ::Type{T}) where {N,T<:Real}
     # @assert period > 0
     x = periodize(x, period)
@@ -23,6 +38,11 @@ function evaluate_periodic_Bspline(::Val{N}, x::Real, period::Real, ::Type{T}) w
     res
 end
 
+"""
+    evaluate_BSpline(::Val{N}, x, ::Type{T})
+
+Evaluate the periodic centered B-spline of order `N`, and type `T` in `x`.
+"""
 function evaluate_Bspline(::Val{N}, x::Real, ::Type{T}) where {N,T<:Real}
     (T(x)/T(N)*evaluate_Bspline(Val{N-1}(), x, T) +
         (T(N+1)-T(x))/T(N)*evaluate_Bspline(Val{N-1}(), x-1, T))
@@ -82,6 +102,11 @@ end
     end
 end
 
+"""
+    evaluate_BSpline_derivative(::Val{N}, ::Var{D}, x, ::Type{T})
+
+Evaluate the `D`th derivative of the B-spline of order `N`, and type `T` in `x`.
+"""
 evaluate_Bspline_derivative(::Val{N}, ::Val{0}, x::Real, ::Type{T}) where {N,T<:Real} =
     evaluate_Bspline(Val{N}(), x, T)
 
@@ -266,6 +291,11 @@ function evaluate_Bspline_derivative(::Val{N}, ::Val{K}, x::Real, ::Type{T}) whe
         (T(N+1)-T(x))/T(N)*evaluate_Bspline_derivative(Val{N-1}(), Val{K}(), x-1, T) + T(x)/T(N)*evaluate_Bspline_derivative(Val{N-1}(), Val{K}(), x, T)
 end
 
+"""
+    evaluate_periodic_BSpline_derivative(::Val{N}, ::Var{D}, x, period, ::Type{T})
+
+Evaluate the `D`th derivative of the periodic B-spline of order `N`, type `T` and period `p` in `x`.
+"""
 function evaluate_periodic_Bspline_derivative(::Val{N}, ::Val{K}, x::Real, period::Real, ::Type{T}) where {N,K,T<:Real}
     x = periodize(x, period)
     res = T(0)
@@ -274,3 +304,20 @@ function evaluate_periodic_Bspline_derivative(::Val{N}, ::Val{K}, x::Real, perio
     end
     res
 end
+
+"""
+    evaluate_periodic_centered_BSpline_derivative(::Val{N}, ::Var{D}, x, period, ::Type{T})
+
+Evaluate the `D`th derivative of the periodic centered B-spline of order `N`, type `T` and period `p` in `x`.
+"""
+evaluate_periodic_centered_BSpline_derivative(::Val{N}, ::Val{K}, x::Real, period::Real, ::Type{T}) where {N,K,T<:Real} =
+    evaluate_periodic_BSpline_derivative(Val{N}(), Val{K}(), x+T(N+1)/2, period, T)
+
+
+"""
+    evaluate_centered_BSpline_derivative(::Val{N}, ::Var{D}, x, ::Type{T})
+
+Evaluate the `D`th derivative of the centered B-spline of order `N`, type `T` and period `p` in `x`.
+"""
+evaluate_centered_BSpline_derivative(::Val{N}, ::Val{K}, x::Real, ::Type{T}) where {N,K,T<:Real} =
+    evaluate_BSpline_derivative(Val{N}(), Val{K}(), x+T(N+1)/2, T)
