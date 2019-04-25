@@ -147,7 +147,7 @@ function allocation_test()
                 f(x)
             end
             for x in LinRange(-10,10,30)
-                @test @timed(f(x))[3] == 32
+                @test @timed(f(x))[3] <= 32
             end
         end
     end
@@ -158,7 +158,7 @@ function allocation_test()
                 f(x)
             end
             for x in LinRange(-10,10,30)
-                @test @timed(f(x))[3] == 32
+                @test @timed(f(x))[3] <= 32
             end
         end
     end

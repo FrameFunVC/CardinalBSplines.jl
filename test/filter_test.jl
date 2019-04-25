@@ -1,4 +1,4 @@
-using CardinalBSplines, LinearAlgebra, Test, Sequences
+using CardinalBSplines, LinearAlgebra, Test, InfiniteVectors
 
 @testset "Filter short cuts" begin
     for b in CardinalBSplines.IMPLEMENTED_FILTERS

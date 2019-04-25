@@ -1,7 +1,7 @@
 using Pkg
 pkg"rm CardinalBSplines"
-pkg"rm Sequences"
-pkg"add https://github.com/vincentcp/Sequences.jl"
+pkg"rm InfiniteVectors"
+pkg"add https://github.com/vincentcp/InfiniteVectors.jl"
 Pkg.develop(PackageSpec(path=splitdir(@__DIR__)[1]))
 pkg"instantiate"
 using Documenter, CardinalBSplines

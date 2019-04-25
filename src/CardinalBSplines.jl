@@ -7,7 +7,7 @@ include("splinetypes.jl")
 include("splineevaluation.jl")
 include("integration.jl")
 
-using Sequences
+using InfiniteVectors
 export bn, bnm, snm, b̃nm, compact_dualperiodicbsplinesignal
 include("filters.jl")
 
