@@ -185,16 +185,4 @@ end
 end
 
 include("filter_test.jl")
-
-if CREATE_README
-    cd(normpath((splitdir(@__FILE__))[1]*"/.."))
-    try
-        println("Create README.md")
-        run(`jupyter nbconvert --execute --to markdown --output README.md notebooks/README.ipynb`)
-        run(`mv notebooks/README.md .`)
-        run(`mv notebooks/README_files/ .`)
-    catch
-        nothing
-    end
-end
 println("All tests succeeded")
