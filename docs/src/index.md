@@ -12,8 +12,19 @@ Pages = ["man/evaluation.md","man/integration.md","man/filters.md"]
 
 ## Installation
 
-CardinalBSplines.jl is not added to the Julia package manager and depends on a unregistered package InfiniteVectors.jl.
-The packages can easily be installed by cloning their git repository. From the Julia REPL, type `]` to enter Pkg mode and run
+CardinalBSplines.jl is not added to the Julia General registry and depends on a unregistered package InfiniteVectors.jl.
+
+### Recomanded
+For Julia 1.1 or higher, you can add the FrameFun registry and than add CardinalBSplines.
+From the Julia REPL, type `]` to enter Pkg mode and run
+
+```julia
+pkg> add https://github.com/vincentcp/FrameFunRegistry
+pkg> add CardinalBSplines
+```
+
+### Legacy
+In Julia 1.0, the packages can be installed by cloning their git repository. From the Julia REPL, type `]` to enter Pkg mode and run
 
 ```julia
 pkg> add https://github.com/vincentcp/InfiniteVectors.jl

@@ -1,8 +1,6 @@
 using CardinalBSplines, LinearAlgebra, Test, QuadGK
 CREATE_README = false
 
-
-
 function elementarypropsofsplinetest(T)
     T = real(T)
     tol = sqrt(eps(T))
