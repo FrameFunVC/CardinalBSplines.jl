@@ -25,7 +25,7 @@ Installation instructions and full functionality can be found in the [documentat
 
 #### The periodic, centered B-splines of order 0 to 10 with period 4.
 
-![svg](README_files/README_5_0.svg)
+![svg](README_files/README_7_0.svg)
 
 #### The 0th to 4th derivative of the periodic B-spline of order 4 with period 3.
 

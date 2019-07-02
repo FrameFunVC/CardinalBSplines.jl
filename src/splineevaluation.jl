@@ -296,7 +296,7 @@ end
 
 Evaluate the `D`th derivative of the periodic B-spline of order `N`, type `T` and period `p` in `x`.
 """
-function evaluate_periodic_Bspline_derivative(::Val{N}, ::Val{K}, x::Real, period::Real, ::Type{T}) where {N,K,T<:Real}
+function evaluate_periodic_BSpline_derivative(::Val{N}, ::Val{K}, x::Real, period::Real, ::Type{T}) where {N,K,T<:Real}
     x = periodize(x, period)
     res = T(0)
     for k in 0:floor(Int, (N+1-x)/period)
