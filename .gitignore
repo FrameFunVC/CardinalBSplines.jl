@@ -1,3 +1,4 @@
+docs/src/man/figs/*
 docs/build/*
 Manifest.toml
 *.log
