@@ -6,7 +6,7 @@ abstract type AbstractBSpline{K,S} <: AbstractBSplineDerivative{K,0,S} end
 
 
 
-for (T, f) in ((:BSpline, :evaluate_Bspline),
+for (T, f) in ((:BSpline, :evaluate_BSpline),
                 (:CenteredBSpline, :evaluate_centered_BSpline))
     @eval begin
         struct ($T){K,S} <:AbstractBSpline{K,S}
@@ -46,7 +46,7 @@ The support of the centered B-spline is s \$\\left[-\\tfrac{m+1}{2},\\tfrac{m+1}
 CenteredBSpline(m, T)
 
 
-for (T, f) in ((:PeriodicBSpline, :evaluate_periodic_Bspline),
+for (T, f) in ((:PeriodicBSpline, :evaluate_periodic_BSpline),
                 (:PeriodicCenteredBSpline, :evaluate_periodic_centered_BSpline))
     @eval begin
         struct ($T){K,S} <:AbstractBSpline{K,S}
@@ -85,7 +85,7 @@ See also `CenteredBSpline`
 """
 PeriodicCenteredBSpline(m, p, S)
 
-for (T, f) in ((:BSplineDiff, :evaluate_Bspline_derivative),
+for (T, f) in ((:BSplineDiff, :evaluate_BSpline_derivative),
                 (:CenteredBSplineDiff, :evaluate_centered_BSpline_derivative))
     @eval begin
         struct ($T){K,D,S}<:AbstractBSplineDerivative{K,D,S}
@@ -127,7 +127,7 @@ CenteredBSplineDiff(m, d, S)
 
 
 
-for (T, f) in ((:PeriodicBSplineDiff, :evaluate_periodic_Bspline_derivative),
+for (T, f) in ((:PeriodicBSplineDiff, :evaluate_periodic_BSpline_derivative),
                 (:PeriodicCenteredBSplineDiff, :evaluate_periodic_centered_BSpline_derivative))
     @eval begin
         struct ($T){K,D,S} <:AbstractBSplineDerivative{K,D,S}

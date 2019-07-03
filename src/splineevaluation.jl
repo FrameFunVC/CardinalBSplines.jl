@@ -6,7 +6,7 @@
 Evaluate the periodic centered B-spline of order `N`, type `T` and period `p` in `x`.
 """
 evaluate_periodic_centered_BSpline(::Val{N}, x::Real, period::Real, ::Type{T}) where {T<:Real,N} =
-    evaluate_periodic_Bspline(Val{N}(), x+T(N+1)/2, period, T)
+    evaluate_periodic_BSpline(Val{N}(), x+T(N+1)/2, period, T)
 
 """
     evaluate_centered_BSpline(::Val{N}, x, period, ::Type{T})
@@ -14,7 +14,7 @@ evaluate_periodic_centered_BSpline(::Val{N}, x::Real, period::Real, ::Type{T}) w
 Evaluate the centered B-spline of order `N` and type `T` in `x`.
 """
 evaluate_centered_BSpline(::Val{N}, x::Real, ::Type{T}) where {T<:Real,N} =
-    evaluate_Bspline(Val{N}(), x+T(N+1)/2, T)
+    evaluate_BSpline(Val{N}(), x+T(N+1)/2, T)
 
 function periodize(x::Real, period::Real)
     x -= period*fld(x, period)
@@ -28,12 +28,12 @@ end
 
 Evaluate the periodic B-spline of order `N`, type `T` and period `p` in `x`.
 """
-function evaluate_periodic_Bspline(::Val{N}, x::Real, period::Real, ::Type{T}) where {N,T<:Real}
+function evaluate_periodic_BSpline(::Val{N}, x::Real, period::Real, ::Type{T}) where {N,T<:Real}
     # @assert period > 0
     x = periodize(x, period)
     res = T(0)
     for k in 0:floor(Int, (N+1-x)/period)
-        res += evaluate_Bspline(Val{N}(), x+period*k, T)
+        res += evaluate_BSpline(Val{N}(), x+period*k, T)
     end
     res
 end
@@ -43,14 +43,14 @@ end
 
 Evaluate the periodic centered B-spline of order `N`, and type `T` in `x`.
 """
-function evaluate_Bspline(::Val{N}, x::Real, ::Type{T}) where {N,T<:Real}
-    (T(x)/T(N)*evaluate_Bspline(Val{N-1}(), x, T) +
-        (T(N+1)-T(x))/T(N)*evaluate_Bspline(Val{N-1}(), x-1, T))
+function evaluate_BSpline(::Val{N}, x::Real, ::Type{T}) where {N,T<:Real}
+    (T(x)/T(N)*evaluate_BSpline(Val{N-1}(), x, T) +
+        (T(N+1)-T(x))/T(N)*evaluate_BSpline(Val{N-1}(), x-1, T))
 end
 
-evaluate_Bspline(::Val{0}, x::Real, ::Type{T}) where {T<:Real} = (0 <= x < 1) ? T(1) : T(0)
+evaluate_BSpline(::Val{0}, x::Real, ::Type{T}) where {T<:Real} = (0 <= x < 1) ? T(1) : T(0)
 
-function evaluate_Bspline(::Val{1}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline(::Val{1}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return T(x)
     elseif (1 <= x < 2)
@@ -60,7 +60,7 @@ function evaluate_Bspline(::Val{1}, x::Real, ::Type{T}) where {T<:Real}
     end
 end
 
-@eval function evaluate_Bspline(::Val{2}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline(::Val{2}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x),T(0), T(0), T(1/2))
     elseif (1 <= x < 2)
@@ -72,7 +72,7 @@ end
     end
 end
 
-@eval function evaluate_Bspline(::Val{3}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline(::Val{3}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x), T(0), T(0), T(0), T(1//6))
     elseif (1 <= x < 2)
@@ -86,7 +86,7 @@ end
     end
 end
 
-@eval function evaluate_Bspline(::Val{4}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline(::Val{4}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x), T(0), T(0), T(0), T(0), T(1//24))
     elseif (1 <= x < 2)
@@ -107,19 +107,19 @@ end
 
 Evaluate the `D`th derivative of the B-spline of order `N`, and type `T` in `x`.
 """
-evaluate_Bspline_derivative(::Val{N}, ::Val{0}, x::Real, ::Type{T}) where {N,T<:Real} =
-    evaluate_Bspline(Val{N}(), x, T)
+evaluate_BSpline_derivative(::Val{N}, ::Val{0}, x::Real, ::Type{T}) where {N,T<:Real} =
+    evaluate_BSpline(Val{N}(), x, T)
 
-evaluate_Bspline_derivative(::Val{0}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real} =
+evaluate_BSpline_derivative(::Val{0}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real} =
     T(0)
 
-evaluate_Bspline_derivative(::Val{0}, ::Val{K}, x::Real, ::Type{T}) where {K,T<:Real} =
+evaluate_BSpline_derivative(::Val{0}, ::Val{K}, x::Real, ::Type{T}) where {K,T<:Real} =
     T(0)
-evaluate_Bspline_derivative(::Val{0}, ::Val{0}, x::Real, ::Type{T}) where {K,T<:Real} =
-    evaluate_Bspline(Val{0}(), x, T)
+evaluate_BSpline_derivative(::Val{0}, ::Val{0}, x::Real, ::Type{T}) where {K,T<:Real} =
+    evaluate_BSpline(Val{0}(), x, T)
 
 
-function evaluate_Bspline_derivative(::Val{1}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline_derivative(::Val{1}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return T(1)
     elseif (1 <= x < 2)
@@ -129,7 +129,7 @@ function evaluate_Bspline_derivative(::Val{1}, ::Val{1}, x::Real, ::Type{T}) whe
     end
 end
 
-@eval function evaluate_Bspline_derivative(::Val{2}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline_derivative(::Val{2}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x),T(0), T(1))
     elseif (1 <= x < 2)
@@ -141,7 +141,7 @@ end
     end
 end
 
-@eval function evaluate_Bspline_derivative(::Val{3}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline_derivative(::Val{3}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x), T(0), T(0), T(1//2))
     elseif (1 <= x < 2)
@@ -155,7 +155,7 @@ end
     end
 end
 
-@eval function evaluate_Bspline_derivative(::Val{4}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline_derivative(::Val{4}, ::Val{1}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x), T(0), T(0), T(0), T(1//6))
     elseif (1 <= x < 2)
@@ -172,11 +172,11 @@ end
 end
 
 
-function evaluate_Bspline_derivative(::Val{1}, ::Val{2}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline_derivative(::Val{1}, ::Val{2}, x::Real, ::Type{T}) where {T<:Real}
     T(0) # +1 at 0, -2 at 1, +1 at 2
 end
 
-function evaluate_Bspline_derivative(::Val{2}, ::Val{2}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline_derivative(::Val{2}, ::Val{2}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return T(1)
     elseif (1 <= x < 2)
@@ -188,7 +188,7 @@ function evaluate_Bspline_derivative(::Val{2}, ::Val{2}, x::Real, ::Type{T}) whe
     end
 end
 
-@eval function evaluate_Bspline_derivative(::Val{3}, ::Val{2}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline_derivative(::Val{3}, ::Val{2}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x), T(0), T(1))
     elseif (1 <= x < 2)
@@ -202,7 +202,7 @@ end
     end
 end
 
-@eval function evaluate_Bspline_derivative(::Val{4}, ::Val{2}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline_derivative(::Val{4}, ::Val{2}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x), T(0), T(0), T(1//2))
     elseif (1 <= x < 2)
@@ -218,11 +218,11 @@ end
     end
 end
 
-function evaluate_Bspline_derivative(::Val{2}, ::Val{3}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline_derivative(::Val{2}, ::Val{3}, x::Real, ::Type{T}) where {T<:Real}
     T(0)# jump 1 at 0, -3 at 1, +3, at 2 -1 at 3
 end
 
-function evaluate_Bspline_derivative(::Val{3}, ::Val{3}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline_derivative(::Val{3}, ::Val{3}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return T(1)
     elseif (1 <= x < 2)
@@ -236,7 +236,7 @@ function evaluate_Bspline_derivative(::Val{3}, ::Val{3}, x::Real, ::Type{T}) whe
     end
 end
 
-@eval function evaluate_Bspline_derivative(::Val{4}, ::Val{3}, x::Real, ::Type{T}) where {T<:Real}
+@eval function evaluate_BSpline_derivative(::Val{4}, ::Val{3}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return @evalpoly(T(x), T(0), T(1))
     elseif (1 <= x < 2)
@@ -252,11 +252,11 @@ end
     end
 end
 
-function evaluate_Bspline_derivative(::Val{3}, ::Val{4}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline_derivative(::Val{3}, ::Val{4}, x::Real, ::Type{T}) where {T<:Real}
     T(0) # jump 1 at 0, -4 at 2, +6 at 3, -4 at 4, +1, at 5
 end
 
-function evaluate_Bspline_derivative(::Val{4}, ::Val{4}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline_derivative(::Val{4}, ::Val{4}, x::Real, ::Type{T}) where {T<:Real}
     if (0 <= x < 1)
         return T(1)
     elseif (1 <= x < 2)
@@ -272,11 +272,11 @@ function evaluate_Bspline_derivative(::Val{4}, ::Val{4}, x::Real, ::Type{T}) whe
     end
 end
 
-function evaluate_Bspline_derivative(::Val{4}, ::Val{5}, x::Real, ::Type{T}) where {T<:Real}
+function evaluate_BSpline_derivative(::Val{4}, ::Val{5}, x::Real, ::Type{T}) where {T<:Real}
     T(0) # jump 1 at 0, -5 at 1, +10 at 2 -10 at 3, +5 at 4, -1 at 5.
 end
 
-function evaluate_Bspline_derivative(::Val{N}, ::Val{N}, x::Real, ::Type{T}) where {N,T<:Real}
+function evaluate_BSpline_derivative(::Val{N}, ::Val{N}, x::Real, ::Type{T}) where {N,T<:Real}
     xfl = floor(Int, x)
     if xfl < 0 || xfl > N
         T(0)
@@ -286,9 +286,9 @@ function evaluate_Bspline_derivative(::Val{N}, ::Val{N}, x::Real, ::Type{T}) whe
 end
 
 # reduce degree
-function evaluate_Bspline_derivative(::Val{N}, ::Val{K}, x::Real, ::Type{T}) where {N,K,T}
-    T(K)/T(N)*(evaluate_Bspline_derivative(Val{N-1}(), Val{K-1}(), x, T) - evaluate_Bspline_derivative(Val{N-1}(), Val{K-1}(), x-1, T)) +
-        (T(N+1)-T(x))/T(N)*evaluate_Bspline_derivative(Val{N-1}(), Val{K}(), x-1, T) + T(x)/T(N)*evaluate_Bspline_derivative(Val{N-1}(), Val{K}(), x, T)
+function evaluate_BSpline_derivative(::Val{N}, ::Val{K}, x::Real, ::Type{T}) where {N,K,T}
+    T(K)/T(N)*(evaluate_BSpline_derivative(Val{N-1}(), Val{K-1}(), x, T) - evaluate_BSpline_derivative(Val{N-1}(), Val{K-1}(), x-1, T)) +
+        (T(N+1)-T(x))/T(N)*evaluate_BSpline_derivative(Val{N-1}(), Val{K}(), x-1, T) + T(x)/T(N)*evaluate_BSpline_derivative(Val{N-1}(), Val{K}(), x, T)
 end
 
 """
@@ -300,7 +300,7 @@ function evaluate_periodic_BSpline_derivative(::Val{N}, ::Val{K}, x::Real, perio
     x = periodize(x, period)
     res = T(0)
     for k in 0:floor(Int, (N+1-x)/period)
-        res += evaluate_Bspline_derivative(Val{N}(), Val{K}(), x+period*k, T)
+        res += evaluate_BSpline_derivative(Val{N}(), Val{K}(), x+period*k, T)
     end
     res
 end

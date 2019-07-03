@@ -13,7 +13,7 @@ f.(x)
 The second one is uses the internal function in [Internal evaluation functions](@ref).
 
 ```@example manual
-CardinalBSplines.evaluate_Bspline.(Val{3}(), x, Float64)
+CardinalBSplines.evaluate_BSpline.(Val{3}(), x, Float64)
 ```
 
 ```@meta

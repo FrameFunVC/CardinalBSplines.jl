@@ -8,10 +8,11 @@ Implements the signals of `B-Spline Signal Processing: Part I`\\
 Unser et al., IEEE TRANSACTIONS ON SIGNAL PROCESSING, VOL. 41, NO. 2
 """
 bsplinesignal(n::Int, ::Type{T}=Float64) where {T} =
-    CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -(n+2)>>1), convert(T, (n+2)>>1-1), (((n+2)>>1)<<1)), T), (n+2)>>1)
+    CompactInfiniteVector(evaluate_centered_BSpline.((Val{n}()),
+        (LinRange(convert(T, -((n+2)>>1)), convert(T, ((n+2)>>1)-1), ((n+2)>>1)<<1)), T), -((n+2)>>1))
 function bsplinesignal(n::Int, m::Int, ::Type{T}=Float64) where {T}
     K = (m*(n+1)+1)>>1
-    CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -K)/m, convert(T, K-1)/m, 2K), T), -K)
+    CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -K)/m, convert(T, K-1)/m, K<<1), T), -K)
 end
 
 """
@@ -86,7 +87,7 @@ The coefficients of `b̃nm` in `bnm`, i.e.,
 snm(n::Int, m::Int, N::Int, ::Type{T}=Float64) where T = periodicleastsquarescoefficients(n, m, N, T)
 
 
-IMPLEMENTED_FILTERS = []
+IMPLEMENTED_FILTERS = CompactInfiniteVector[]
 for n in 0:5
     bn = Symbol(string("bn",n))
     @eval $bn = bn($n)
