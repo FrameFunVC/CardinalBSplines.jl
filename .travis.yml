@@ -23,6 +23,8 @@ jobs:
         - stage: "Documentation"
           julia: 1.1
           os: linux
+          services: docker
+          sudo: true
           script:
-            - julia --project=docs/ --color=yes docs/make.jl deploy
+            - julia --project=docs/ --color=yes docs/make.jl deploy docker
           after_success: skip
