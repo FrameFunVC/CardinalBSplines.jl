@@ -61,6 +61,6 @@ makedocs(sitename="CardinalBSplines.jl",
 
 if "deploy" in ARGS && Sys.ARCH === :x86_64 && Sys.KERNEL === :Linux
     deploydocs(
-        repo = "github.com/vincentcp/CardinalBSplines.jl.git",
+        repo = "github.com/FrameFunVC/CardinalBSplines.jl.git",
     )
 end

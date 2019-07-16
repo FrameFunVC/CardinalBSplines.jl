@@ -19,7 +19,7 @@ For Julia 1.1 or higher, you can add the FrameFun registry and than add Cardinal
 From the Julia REPL, type `]` to enter Pkg mode and run
 
 ```julia
-pkg> add https://github.com/vincentcp/FrameFunRegistry
+pkg> add https://github.com/FrameFunVC/FrameFunRegistry
 pkg> add CardinalBSplines
 ```
 
@@ -27,14 +27,14 @@ pkg> add CardinalBSplines
 In Julia 1.0, the packages can be installed by cloning their git repository. From the Julia REPL, type `]` to enter Pkg mode and run
 
 ```julia
-pkg> add https://github.com/vincentcp/InfiniteVectors.jl
-pkg> add https://github.com/vincentcp/CardinalBSplines.jl
+pkg> add https://github.com/FrameFunVC/InfiniteVectors.jl
+pkg> add https://github.com/FrameFunVC/CardinalBSplines.jl
 ```
 
 or in a file you could use
 
 ```julia
 using Pkg
-pkg"add https://github.com/vincentcp/InfiniteVectors.jl"
-pkg"add https://github.com/vincentcp/CardinalBSplines.jl"
+pkg"add https://github.com/FrameFunVC/InfiniteVectors.jl"
+pkg"add https://github.com/FrameFunVC/CardinalBSplines.jl"
 ```
