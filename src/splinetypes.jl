@@ -1,3 +1,13 @@
+export GaussSpline
+struct GaussSpline{K,S} end
+
+(GaussSpline)(K::Int, S=Float64) = (GaussSpline){K}(S)
+(GaussSpline){K}(::Type{S}) where {K,S} = (GaussSpline){K,S}()
+(::(GaussSpline){K,S})(x) where {K,S} = evaluate_centered_gauss_BSpline(Val{K}(), convert(S,x), S)
+
+function evaluate_centered_gauss_BSpline(::Val{K}, x, ::Type{T}) where {K,T}
+    sqrt(T(6)/T(pi)/T(K+1))*exp(-T(6)*x^2/T(K+1))
+end
 
 abstract type AbstractBSplineDerivative{K,D,S} end
 
