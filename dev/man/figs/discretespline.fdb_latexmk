@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1563270356 "discretespline.tex" "discretespline.pdf" "discretespline" 1563270357
+["pdflatex"] 1564389454 "discretespline.tex" "discretespline.pdf" "discretespline" 1564389455
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1480098701 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi10.tfm" 1480098701 1528 abec98dbc43e172678c11b3b9031252a ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi5.tfm" 1480098701 1508 3b32edd0d68f6498a5a375e78f9edc5e ""
@@ -193,9 +193,9 @@
   "/usr/share/texlive/texmf-dist/tex/luatex/luaotfload/luaotfload-characters.lua" 1485820867 1548690 99578c3eff8b68cae3da45a4a7cbfcf2 ""
   "/usr/share/texlive/texmf-dist/tex/luatex/luaotfload/luaotfload-glyphlist.lua" 1485820867 102422 bcf89e1441be9f4ad29c0cf3a076bcea ""
   "/var/lib/texmf/web2c/luatex/lualatex.fmt" 1543615724 1349082 ee2b768dfd8475c6077ab36d2b5d4dce ""
-  "discretespline.aux" 1563270357 8 a94a2480d3289e625eea47cd1b285758 ""
-  "discretespline.tex" 1563270356 2138 b3d38672833cc9adfbe90664e4199c64 ""
+  "discretespline.aux" 1564389455 8 a94a2480d3289e625eea47cd1b285758 ""
+  "discretespline.tex" 1564389454 2138 b3d38672833cc9adfbe90664e4199c64 ""
   (generated)
   "discretespline.aux"
-  "discretespline.pdf"
   "discretespline.log"
+  "discretespline.pdf"
