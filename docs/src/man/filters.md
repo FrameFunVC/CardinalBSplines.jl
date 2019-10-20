@@ -14,7 +14,7 @@ In the figure below we show two examples of such discrete B-splines, namely, $$b
 ![](figs/discretespline.svg)
 
 
-For oversampled discrete B-splines ($$m>1$$) there exists compact duals, i.e., signals, $$g$$, such that
+For oversampled discrete B-splines ($$m>1$$) there exist compact duals, i.e., signals, $$g$$, such that
 
 $$\langle \delta_{lm} * b^n_m, \delta_{km} * g\rangle=\delta_{l-k},\quad \forall l,k\in \mathbb Z.$$
 

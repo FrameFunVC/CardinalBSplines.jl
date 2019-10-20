@@ -14,7 +14,7 @@ Pages = ["man/evaluation.md","man/integration.md","man/filters.md"]
 
 CardinalBSplines.jl is not added to the Julia General registry and depends on a unregistered package InfiniteVectors.jl.
 
-### Recomanded
+### Recommended
 For Julia 1.1 or higher, you can add the FrameFun registry and than add CardinalBSplines.
 From the Julia REPL, type `]` to enter Pkg mode and run
 
