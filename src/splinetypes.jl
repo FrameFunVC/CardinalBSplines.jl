@@ -27,9 +27,13 @@ for (T, f) in ((:BSpline, :evaluate_BSpline),
             end
         end
 
-        ($T)(K::Int, S=Float64) = ($T){K}(S)
-        ($T){K}(::Type{S}) where {K,S} = ($T){K,S}()
+        ($T)() = ($T){3}()
+        ($T)(::Type{S}) where {S} = ($T){3}(S)
+        ($T)(::Val{K}, args...) where {K} = ($T){K}(args...)
+        ($T){K}(::Type{S}=Float64) where {K,S} = ($T){K,S}()
         (::($T){K,S})(x) where {K,S} = $f(Val{K}(), convert(S,x), S)
+        # Warning: the one below is not type stable, but it is convenient
+        ($T)(K::Int, ::Type{S}=Float64) where {S} = ($T){K,S}()
     end
 end
 
@@ -69,9 +73,14 @@ for (T, f) in ((:PeriodicBSpline, :evaluate_periodic_BSpline),
             end
         end
 
-        ($T)(K::Int, period=1, S=Float64) = ($T){K}(period, S)
-        ($T){K}(period, ::Type{S}) where {K,S} = ($T){K,S}(period)
+        ($T)() = ($T){3}()
+        ($T)(::Val{K}, args...) where {K} = ($T){K}(args...)
+        ($T)(::Type{S}) where {S} = ($T){3}(S)
+        ($T){K}(::Type{S}) where {K,S} = ($T){K}(1, S)
+        ($T){K}(period = 1, ::Type{S}=Float64) where {K,S} = ($T){K,S}(period)
         (spline::($T){K,S})(x) where {K,S} = $f(Val{K}(), convert(S,x), spline.period, S)
+        # Warning: the one below is not type stable, but it is convenient
+        ($T)(K::Int, period=1, S=Float64) = ($T){K}(period, S)
     end
 end
 
@@ -107,10 +116,20 @@ for (T, f) in ((:BSplineDiff, :evaluate_BSpline_derivative),
             end
         end
 
-        ($T)(K::Int, S=Float64) = ($T)(K, 1, S)
-        ($T)(K::Int, D::Int, S=Float64) = ($T){K,D}(S)
-        ($T){K,D}(::Type{S}) where {K,D,S} = ($T){K,D,S}()
+        # First, parse spline degree K
+        ($T)() = ($T){3}()
+        ($T)(::Val{K}, args...) where {K} = ($T){K}(args...)
+        # Next, parse the differentiation order
+        # - the order is omitted, only S is given: use D=1
+        ($T){K}(::Type{S}) where {K,S} = ($T){K}(Val{1}(), S)
+        # - order is specified as Val{D} or nothing is given
+        ($T){K}(d::Val{D}=Val{1}(), args...) where {K,D} = ($T){K,D}(args...)
+        # Finally, parse S
+        ($T){K,D}(::Type{S}=Float64) where {K,D,S} = ($T){K,D,S}()
         (::($T){K,D,S})(x) where {K,D,S} = $f(Val{K}(), Val{D}(), convert(S,x), S)
+        # Warning: the ones below are not type stable, but they are convenient
+        ($T)(K::Int, args...) = ($T){K}(args...)
+        ($T){K}(D::Int, args...) where {K} = ($T){K,D}(args...)
     end
 end
 
@@ -150,10 +169,28 @@ for (T, f) in ((:PeriodicBSplineDiff, :evaluate_periodic_BSpline_derivative),
                 new{K,D,S}(convert(S, period))
             end
         end
-        ($T)(K::Int, period=1, S=Float64) = ($T)(K, period, 1, S)
-        ($T)(K::Int, period, D::Int, S=Float64) = ($T){K,D}(period, S)
-        ($T){K,D}(period, ::Type{S}) where {K,D,S} = ($T){K,D,S}(period)
+
+        # The order of the arguments is: K, period, D, S.
+
+        # First: parse the spline degree and invoke $T{K}
+        ($T)() = ($T){3}()
+        ($T)(::Val{K}, args...) where {K} = ($T){K}(args...)
+        # Next: parse the period
+        # - the period is omitted (obvious because Val{D} is given): add default
+        ($T){K}(d::Val{D}, args...) where {K,D} = ($T){K}(1, d, args...)
+        # - assume defaults and invoke $T{K,D}
+        ($T){K}(period::Number=1, d::Val{D}=Val{1}(), args...) where {K,D} = ($T){K,D}(period, args...)
+        # - the case where period and S are given, but D is not
+        ($T){K}(period::Number, ::Type{S}) where {K,S} = ($T){K}(period, Val{1}(), S)
+        # - only S is given
+        ($T){K}(::Type{S}) where {K,S} = ($T){K}(1, Val{1}(), S)
+        # Finally, invoke $T{K,D,S}
+        ($T){K,D}(::Type{S}=Float64) where {K,D,S} = ($T){K,D}(1, S)
+        ($T){K,D}(period::Number, ::Type{S}=Float64) where {K,D,S} = ($T){K,D,S}(period)
         (spline::($T){K,D,S})(x) where {K,S,D} = $f(Val{K}(), Val{D}(), convert(S,x), spline.period, S)
+        # Warning: the ones below are not type stable, but they are convenient
+        ($T)(K::Int, args...) = ($T){K}(args...)
+        ($T){K}(period::Number, D::Int, args...) where {K} = ($T){K}(period, Val{D}(), args...)
     end
 end
 

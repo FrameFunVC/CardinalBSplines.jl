@@ -10,7 +10,7 @@ x = LinRange(-1,5,10)
 f.(x)
 ```
 
-The second one is uses the internal function in [Internal evaluation functions](@ref).
+The second one uses the internal function in [Internal evaluation functions](@ref).
 
 ```@example manual
 CardinalBSplines.evaluate_BSpline.(Val{3}(), x, Float64)
