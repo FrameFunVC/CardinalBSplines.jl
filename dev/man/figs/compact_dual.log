@@ -1,4 +1,4 @@
-This is LuaTeX, Version 1.0.4 (TeX Live 2017/Debian)  (format=lualatex 2018.11.30)  29 JUL 2019 08:37
+This is LuaTeX, Version 1.0.4 (TeX Live 2017/Debian)  (format=lualatex 2018.11.30)  24 OCT 2019 11:01
  system commands enabled.
 **compact_dual.tex
 (./compact_dual.tex
@@ -35,7 +35,7 @@ Inserting `luaotfload.aux.set_capheight' at position 3 in `luaotfload.patch_font
 '.
 Inserting `luaotfload.rewrite_fontname' at position 4 in `luaotfload.patch_font'
 .
-luaotfload | main : initialization completed in 0.127 seconds
+luaotfload | main : initialization completed in 0.137 seconds
 Babel <3.18> and hyphenation patterns for 1 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/generic/luatex85/luatex85.sty
 Package: luatex85 2016/06/15 v1.4 pdftex aliases for luatex
@@ -665,19 +665,19 @@ streamstart ]'): plot handler does not support LUA.
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./compact_dual.aux))
 
 Here is how much of LuaTeX's memory you used:
- 23544 strings out of 494480
+ 23546 strings out of 494480
  100000,953878 words of node,token memory allocated
  353 words of node memory still in use:
    2 hlist, 1 vlist, 1 rule, 2 glue, 3 attribute, 45 glue_spec, 3 attribute_list
 , 1 write nodes
-   avail lists: 2:4727,3:3804,4:125,5:34,6:109,7:1119,8:4,9:470
- 26875 multiletter control sequences out of 65536+600000
+   avail lists: 2:4911,3:3908,4:125,5:34,6:133,7:1215,8:4,9:518
+ 26877 multiletter control sequences out of 65536+600000
  25 fonts using 1345103 bytes
  74i,18n,128p,734b,2418s stack positions out of 5000i,500n,10000p,200000b,100000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/s
 hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/tex
 live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on compact_dual.pdf (1 page, 35080 bytes).
+Output written on compact_dual.pdf (1 page, 34179 bytes).
 
 PDF statistics: 23 PDF objects out of 1000 (max. 8388607)
  16 compressed objects within 1 object stream
