@@ -31,9 +31,15 @@ leastsquares_dualperiodicbsplinesignal(n::Int, m::Int, N::Int, ::Type{T}=Float64
 # leastsquares_dualbsplinesignal(n::Int, m::Int, ::Type{T}=Float64; opts...) where {T} =
 #     leastsquares_inv(bsplinesignal(n, m, T), m)
 
+minimalK = (p,q) -> max(0,iseven(p) ?
+    ceil(Int, (p+1)/2*q/(q-1)-(q+1)/(q-1)) +1 :
+    round((p+1)/2*q/(q-1)-(q+1)/(q-1)) ≈ (p+1)/2*q/(q-1)-(q+1)/(q-1) ?
+        round(Int,(p+1)/2*q/(q-1)-(q+1)/(q-1)) + 1 :
+        ceil(Int, (p+1)/2*q/(q-1)-(q+1)/(q-1)))
+
 function compact_dualperiodicbsplinesignal(n::Int, m::Int, N::Int, ::Type{T}=Float64) where {T}
     b = bsplinesignal(n, m, T)
-    PeriodicInfiniteVector(inv(b, m), N*m)
+    PeriodicInfiniteVector(inv(b, m;K=minimalK(n,m)), N*m)
 end
 
 function periodicleastsquarescoefficients(n::Int, m::Int, N::Int, ::Type{T}=Float64) where {T}
