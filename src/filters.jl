@@ -12,7 +12,11 @@ bsplinesignal(n::Int, ::Type{T}=Float64) where {T} =
         (LinRange(convert(T, -((n+2)>>1)), convert(T, ((n+2)>>1)-1), ((n+2)>>1)<<1)), T), -((n+2)>>1))
 function bsplinesignal(n::Int, m::Int, ::Type{T}=Float64) where {T}
     K = (m*(n+1)+1)>>1
-    CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -K)/m, convert(T, K-1)/m, K<<1), T), -K)
+    if n==0
+        CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -K)/m, convert(T, K-1)/m, K<<1), T), -K)
+    else
+        CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -K+1)/m, convert(T, K-1)/m, (K<<1)-1), T), -K+1) 
+    end
 end
 
 """
