@@ -5,16 +5,16 @@
     <rect x="0" y="0" width="2400" height="1600"/>
   </clipPath>
 </defs>
-<polygon clip-path="url(#clip3000)" points="
-0,1600 2400,1600 2400,0 0,0 
+<path clip-path="url(#clip3000)" d="
+M0 1600 L2400 1600 L2400 0 L0 0  Z
   " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
 <defs>
   <clipPath id="clip3001">
     <rect x="480" y="0" width="1681" height="1600"/>
   </clipPath>
 </defs>
-<polygon clip-path="url(#clip3000)" points="
-86.9921,1521.01 2352.76,1521.01 2352.76,47.2441 86.9921,47.2441 
+<path clip-path="url(#clip3000)" d="
+M86.9921 1521.01 L2352.76 1521.01 L2352.76 47.2441 L86.9921 47.2441  Z
   " fill="#ffffff" fill-rule="evenodd" fill-opacity="1"/>
 <defs>
   <clipPath id="clip3002">
