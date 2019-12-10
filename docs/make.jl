@@ -11,7 +11,7 @@ P = @pgf GroupPlot({group_style={group_size="2 by 1",},},  # hide
                 {legend_cell_align="left",mark_options={fill_opacity=0.2}}, # hide
                 PlotInc(bsplinesignal(3,2,Float64)), # hide
                 LegendEntry(L"b^3_2")) # hide
-DocumentPGFPlots.savefigs(joinpath(imgdir,"discretespline"), P)
+DocumentPGFPlots.savefigs(joinpath(imgdir,"discretespline"), P;render=false)
 P = @pgf GroupPlot({group_style={group_size="2 by 1",},}, # hide
     {legend_cell_align="left",mark_options={fill_opacity=0.2}}, # hide
     PlotInc(inv(bsplinesignal(1,3,Float64),3)), # hide
@@ -27,7 +27,7 @@ P = @pgf GroupPlot({group_style={group_size="2 by 1",},}, # hide
     LegendEntry(L"K=7"), # hide
     PlotInc(inv(bsplinesignal(3,2,Float64),2,K=21)), # hide
     LegendEntry(L"K=10"),) # hide
-DocumentPGFPlots.savefigs(joinpath(imgdir,"compact_dual"), P)
+DocumentPGFPlots.savefigs(joinpath(imgdir,"compact_dual"), P;render=false)
 
 const render_pdf = "pdf" in ARGS
 let r = r"buildroot=(.+)", i = findfirst(x -> occursin(r, x), ARGS)
