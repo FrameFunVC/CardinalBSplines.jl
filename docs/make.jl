@@ -15,18 +15,18 @@ DocumentPGFPlots.savefigs(joinpath(imgdir,"discretespline"), P)
 P = @pgf GroupPlot({group_style={group_size="2 by 1",},}, # hide
     {legend_cell_align="left",mark_options={fill_opacity=0.2}}, # hide
     PlotInc(inv(bsplinesignal(1,3,Float64),3)), # hide
-    LegendEntry(L"R=3"), # hide
-    PlotInc(inv(bsplinesignal(1,3,Float64),3,R=11)), # hide
-    LegendEntry(L"R=5"), # hide
-    PlotInc(inv(bsplinesignal(1,3,Float64),3,R=21)), # hide
-    LegendEntry(L"R=10"), # hide
+    LegendEntry(L"K=3"), # hide
+    PlotInc(inv(bsplinesignal(1,3,Float64),3,K=11)), # hide
+    LegendEntry(L"K=5"), # hide
+    PlotInc(inv(bsplinesignal(1,3,Float64),3,K=21)), # hide
+    LegendEntry(L"K=10"), # hide
     {legend_cell_align="left",mark_options={fill_opacity=0.2}}, # hide
     PlotInc(inv(bsplinesignal(3,2,Float64),2)), # hide
-    LegendEntry(L"R=4"), # hide
-    PlotInc(inv(bsplinesignal(3,2,Float64),2,R=15)), # hide
-    LegendEntry(L"R=7"), # hide
-    PlotInc(inv(bsplinesignal(3,2,Float64),2,R=21)), # hide
-    LegendEntry(L"R=10"),) # hide
+    LegendEntry(L"K=4"), # hide
+    PlotInc(inv(bsplinesignal(3,2,Float64),2,K=15)), # hide
+    LegendEntry(L"K=7"), # hide
+    PlotInc(inv(bsplinesignal(3,2,Float64),2,K=21)), # hide
+    LegendEntry(L"K=10"),) # hide
 DocumentPGFPlots.savefigs(joinpath(imgdir,"compact_dual"), P)
 
 const render_pdf = "pdf" in ARGS
