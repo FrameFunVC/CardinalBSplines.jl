@@ -15,7 +15,7 @@ function bsplinesignal(n::Int, m::Int, ::Type{T}=Float64) where {T}
     if n==0
         CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -K)/m, convert(T, K-1)/m, K<<1), T), -K)
     else
-        CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -K+1)/m, convert(T, K-1)/m, (K<<1)-1), T), -K+1) 
+        CompactInfiniteVector(evaluate_centered_BSpline.(Val{n}(), LinRange(convert(T, -K+1)/m, convert(T, K-1)/m, (K<<1)-1), T), -K+1)
     end
 end
 
@@ -101,11 +101,13 @@ snm(n::Int, m::Int, N::Int, ::Type{T}=Float64) where T = periodicleastsquarescoe
 
 IMPLEMENTED_FILTERS = CompactInfiniteVector[]
 for n in 0:5
+    local bn
     bn = Symbol(string("bn",n))
     @eval $bn = bn($n)
     @eval push!(IMPLEMENTED_FILTERS,$bn)
     @eval export $bn
     for m in 1:4
+        local bnm
         bnm = Symbol(string("bnm",n, m))
         @eval $bnm = bnm($n,$m)
         @eval push!(IMPLEMENTED_FILTERS,$bnm)
