@@ -1,7 +1,7 @@
 name = "CardinalBSplines"
 uuid = "87d49508-7ad8-11e8-0eda-cb6920b58870"
 authors = ["vincentcp"]
-version = "0.1.4"
+version = "0.2.0"
 
 [deps]
 InfiniteVectors = "a3035606-0d97-52a5-9f37-19f5f67b7424"
@@ -11,7 +11,7 @@ SpecialFunctions = "276daf66-3868-5448-9aa4-cd146d93841b"
 
 [compat]
 InfiniteVectors = "0.1"
-SpecialFunctions = "0.10"
+SpecialFunctions = "0.10,1.0"
 julia = "1.5"
 
 [extras]
