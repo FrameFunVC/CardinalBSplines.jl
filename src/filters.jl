@@ -101,12 +101,17 @@ snm(n::Int, m::Int, N::Int, ::Type{T}=Float64) where T = periodicleastsquarescoe
 
 IMPLEMENTED_FILTERS = CompactInfiniteVector[]
 for n in 0:5
+<<<<<<< HEAD
     local bn, bnm
+=======
+    local bn
+>>>>>>> upstream/master
     bn = Symbol(string("bn",n))
     @eval $bn = bn($n)
     @eval push!(IMPLEMENTED_FILTERS,$bn)
     @eval export $bn
     for m in 1:4
+        local bnm
         bnm = Symbol(string("bnm",n, m))
         @eval $bnm = bnm($n,$m)
         @eval push!(IMPLEMENTED_FILTERS,$bnm)
